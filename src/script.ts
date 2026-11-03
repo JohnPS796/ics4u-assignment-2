@@ -30,7 +30,7 @@ const calculateAnalysis = () => {
     const valueC = Number(c.value);
     const valueD = Number(d.value);
     
-    if (valueA === 0) return;
+    if (valueA === 0 || isNaN(valueA)) return;
     const h = valueB / (3 * valueA);
     const valueP = (3 * valueA * valueC - Math.pow(valueB, 2)) / (3 * Math.pow(valueA, 2));
     const valueQ = (27 * Math.pow(valueA, 2) * valueD - 9 * valueA * valueB * valueC + 2 * Math.pow(valueB, 3)) / (27 * Math.pow(valueA, 3));
@@ -202,13 +202,18 @@ const addItem = (event:Event) => {
             Delete
         </button>
     `;
-    li.addEventListener("click", () => {
-        a.value = valueA;
-        b.value = valueB;
-        c.value = valueC;
-        d.value = valueD;
-        graph();
-    });
+    const card = li.querySelector("div");
+    if (card) {
+        card.addEventListener("click", () => {
+            a.value = valueA;
+            b.value = valueB;
+            c.value = valueC;
+            d.value = valueD;
+            calculateAnalysis();
+            graphFunction();
+        });
+    }
+    
     const deleteBtn = li.querySelector(".delete-btn") as HTMLButtonElement
     deleteBtn.addEventListener("click",() =>{
       li.remove()
