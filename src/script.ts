@@ -52,9 +52,9 @@ const calculateAnalysis = () => {
     const y2 = k * Math.cos(theta + (2 * Math.PI) / 3);
     const y3 = k * Math.cos(theta + (4 * Math.PI) / 3);
 
-    x1 = y1 - h;
-    x2 = y2 - h;
-    x3 = y3 - h;
+    x1 = y1 + h;
+    x2 = y2 + h;
+    x3 = y3 + h;
 
     newR1 = x1;
     newR2 = x2;
