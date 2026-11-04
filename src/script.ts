@@ -144,7 +144,7 @@ const calculateAnalysis = () => {
         drFactor = `(x + ${(-drX).toFixed(4)})^2`;
       }
 
-      let coefficient = `${valueA}`;
+      const coefficient:string = String(valueA);
 
       factoredForm.innerHTML = `${coefficient}${srFactor}${drFactor}`;
       rootsSummary.innerHTML = "1 Single Root, 1 Double Root";
