@@ -31,7 +31,7 @@ const calculateAnalysis = () => {
 
   if (valueA === 0) return;
 
-  const h = valueB / (3 * valueA);
+  const h = -valueB / (3 * valueA);
   const valueP = (3 * valueA * valueC - Math.pow(valueB, 2)) / (3 * Math.pow(valueA, 2));
   const valueQ = (27 * Math.pow(valueA, 2) * valueD - 9 * valueA * valueB * valueC + 2 * Math.pow(valueB, 3)) / (27 * Math.pow(valueA, 3));
   const valueDelta = Math.pow(valueQ / 2, 2) + Math.pow(valueP / 3, 3);
@@ -46,7 +46,7 @@ const calculateAnalysis = () => {
 
   if (valueDelta < 0) {
     const k = 2 * Math.sqrt(-valueP / 3);
-    const theta = (1 / 3) * Math.acos(-valueQ / 2 / Math.sqrt(-Math.pow(valueP / 3, 3)));
+    const theta = (1 / 3) * Math.acos(-valueQ / (2 * Math.sqrt(-Math.pow(valueP / 3, 3))));
 
     const y1 = k * Math.cos(theta);
     const y2 = k * Math.cos(theta + (2 * Math.PI) / 3);
@@ -108,10 +108,23 @@ const calculateAnalysis = () => {
       newR2 = x1;
       newR3 = x1;
 
+
       root1.innerHTML = `x: ${x1.toFixed(4)} | y: 0.0000`;
       root2.innerHTML = `x: ${x1.toFixed(4)} | y: 0.0000`;
       root3.innerHTML = `x: ${x1.toFixed(4)} | y: 0.0000`;
+
+      let tripleRootFactor = `(x - ${x1.toFixed(4)})3`;
+      if (x1 < 0) {
+        tripleRootFactor = `(x + ${x1.toFixed(4)})3`;
+      } else {
+        tripleRootFactor = `(x - ${x1.toFixed(4)})3`;
+      }
+
       rootsSummary.innerHTML = "Triple Real Roots";
+      factoredForm.innerHTML = `${valueA}${tripleRootFactor}`
+
+
+
 
     } else {
       const srY = Math.cbrt(-4 * valueQ);
