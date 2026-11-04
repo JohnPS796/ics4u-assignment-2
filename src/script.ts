@@ -83,7 +83,6 @@ const calculateAnalysis = () => {
 
     factoredForm.innerHTML = `${coefficient}${factor1}${factor2}${factor3}`;
     rootsSummary.innerHTML = "3 Distinct Real Roots";
-
   } else if (valueDelta > 0) {
     const u = Math.cbrt(-valueQ / 2 + Math.sqrt(valueDelta));
     const v = Math.cbrt(-valueQ / 2 - Math.sqrt(valueDelta));
@@ -99,7 +98,6 @@ const calculateAnalysis = () => {
     root3.innerHTML = `x: Imaginary | y: Imaginary`;
     factoredForm.innerHTML = "No real factorization";
     rootsSummary.innerHTML = "1 Real Root, 2 Complex Roots";
-
   } else {
     if (valueP === 0 && valueQ === 0) {
       const x1 = 0 - h;
@@ -108,24 +106,19 @@ const calculateAnalysis = () => {
       newR2 = x1;
       newR3 = x1;
 
-
       root1.innerHTML = `x: ${x1.toFixed(4)} | y: 0.0000`;
       root2.innerHTML = `x: ${x1.toFixed(4)} | y: 0.0000`;
       root3.innerHTML = `x: ${x1.toFixed(4)} | y: 0.0000`;
 
-      let tripleRootFactor = `(x - ${x1.toFixed(4)})3`;
+      let tripleRootFactor = `(x - ${x1.toFixed(4)})^3`;
       if (x1 < 0) {
-        tripleRootFactor = `(x + ${x1.toFixed(4)})3`;
+        tripleRootFactor = `(x + ${x1.toFixed(4)})^3`;
       } else {
-        tripleRootFactor = `(x - ${x1.toFixed(4)})3`;
+        tripleRootFactor = `(x - ${x1.toFixed(4)})^3`;
       }
 
       rootsSummary.innerHTML = "Triple Real Roots";
-      factoredForm.innerHTML = `${valueA}${tripleRootFactor}`
-
-
-
-
+      factoredForm.innerHTML = `${valueA}${tripleRootFactor}`;
     } else {
       const srY = Math.cbrt(-4 * valueQ);
       const srX = srY - h;
@@ -146,24 +139,23 @@ const calculateAnalysis = () => {
         srFactor = `(x + ${(-srX).toFixed(4)})`;
       }
 
-      let drFactor = `(x - ${drX.toFixed(4)})²`;
+      let drFactor = `(x - ${drX.toFixed(4)})`;
       if (drX < 0) {
-        drFactor = `(x + ${(-drX).toFixed(4)})²`;
+        drFactor = `(x + ${(-drX).toFixed(4)})^2`;
       }
 
       let coefficient = `${valueA}`;
 
       factoredForm.innerHTML = `${coefficient}${srFactor}${drFactor}`;
       rootsSummary.innerHTML = "1 Single Root, 1 Double Root";
-
     }
   }
   let polynomial = `${valueA}x³`;
 
   if (valueB > 0) {
-    polynomial = `${polynomial} + ${valueB}x²`;
+    polynomial = `${polynomial} + ${valueB}x^2`;
   } else if (valueB < 0) {
-    polynomial = `${polynomial} - ${-valueB}x²`;
+    polynomial = `${polynomial} - ${-valueB}x^2`;
   }
 
   if (valueC > 0) {
@@ -183,7 +175,7 @@ const calculateAnalysis = () => {
   const derivativeA = 3 * valueA;
   const derivativeB = 2 * valueB;
 
-  let firstDerivativeStr = `${derivativeA}x²`;
+  let firstDerivativeStr = `${derivativeA}x^2`;
 
   if (derivativeB > 0) {
     firstDerivativeStr = `${firstDerivativeStr} + ${derivativeB}x`;
@@ -211,8 +203,6 @@ const calculateAnalysis = () => {
   }
 
   secondDerivative.innerHTML = secondDerivativeStr;
-
-  
 };
 
 const addItem = (event: Event) => {
