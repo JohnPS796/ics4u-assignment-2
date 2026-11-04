@@ -23,175 +23,195 @@ let newR1 = 0;
 let newR2 = 0;
 let newR3 = 0;
 
-
 const calculateAnalysis = () => {
-    const valueA = Number(a.value);
-    const valueB = Number(b.value);
-    const valueC = Number(c.value);
-    const valueD = Number(d.value);
-    
-    if (valueA === 0 || isNaN(valueA)) return;
-    const h = valueB / (3 * valueA);
-    const valueP = (3 * valueA * valueC - Math.pow(valueB, 2)) / (3 * Math.pow(valueA, 2));
-    const valueQ = (27 * Math.pow(valueA, 2) * valueD - 9 * valueA * valueB * valueC + 2 * Math.pow(valueB, 3)) / (27 * Math.pow(valueA, 3));
-    const valueDelta = Math.pow(valueQ / 2, 2) + Math.pow(valueP / 3, 3);
+  const valueA = Number(a.value);
+  const valueB = Number(b.value);
+  const valueC = Number(c.value);
+  const valueD = Number(d.value);
 
+  if (valueA === 0) return;
 
-    p.innerHTML = valueP.toFixed(4);
-    q.innerHTML = valueQ.toFixed(4);
-    delta.innerHTML = valueDelta.toFixed(4);
+  const h = valueB / (3 * valueA);
+  const valueP = (3 * valueA * valueC - Math.pow(valueB, 2)) / (3 * Math.pow(valueA, 2));
+  const valueQ = (27 * Math.pow(valueA, 2) * valueD - 9 * valueA * valueB * valueC + 2 * Math.pow(valueB, 3)) / (27 * Math.pow(valueA, 3));
+  const valueDelta = Math.pow(valueQ / 2, 2) + Math.pow(valueP / 3, 3);
 
-    
-    let x1 = 0;
-    let x2 = 0;
-    let x3 = 0;
+  p.innerHTML = valueP.toFixed(4);
+  q.innerHTML = valueQ.toFixed(4);
+  delta.innerHTML = valueDelta.toFixed(4);
 
-    if (valueDelta < 0) {
-        const k = 2 * Math.sqrt(-valueP / 3);
-        const theta = (1 / 3) * Math.acos((-valueQ / 2) / Math.sqrt(-Math.pow(valueP / 3, 3)));
+  let x1 = 0;
+  let x2 = 0;
+  let x3 = 0;
 
-        const y1 = k * Math.cos(theta);
-        const y2 = k * Math.cos(theta + (2 * Math.PI) / 3);
-        const y3 = k * Math.cos(theta + (4 * Math.PI) / 3);
+  if (valueDelta < 0) {
+    const k = 2 * Math.sqrt(-valueP / 3);
+    const theta = (1 / 3) * Math.acos(-valueQ / 2 / Math.sqrt(-Math.pow(valueP / 3, 3)));
 
-        x1 = y1 - h;
-        x2 = y2 - h;
-        x3 = y3 - h;
+    const y1 = k * Math.cos(theta);
+    const y2 = k * Math.cos(theta + (2 * Math.PI) / 3);
+    const y3 = k * Math.cos(theta + (4 * Math.PI) / 3);
 
-        newR1 = x1;
-        newR2 = x2;
-        newR3 = x3;
+    x1 = y1 - h;
+    x2 = y2 - h;
+    x3 = y3 - h;
 
+    newR1 = x1;
+    newR2 = x2;
+    newR3 = x3;
 
-        root1.innerHTML = `x: ${x1.toFixed(4)} | y: 0.0000`;
-        root2.innerHTML = `x: ${x2.toFixed(4)} | y: 0.0000`;
-        root3.innerHTML = `x: ${x3.toFixed(4)} | y: 0.0000`;
-    }else if (valueDelta > 0) {
-        const u = Math.cbrt(-valueQ / 2 + Math.sqrt(valueDelta));
-        const v = Math.cbrt(-valueQ / 2 - Math.sqrt(valueDelta));
-        const y1 = u + v;
-        x1 = y1 - h;
+    root1.innerHTML = `x: ${x1.toFixed(4)} | y: 0.0000`;
+    root2.innerHTML = `x: ${x2.toFixed(4)} | y: 0.0000`;
+    root3.innerHTML = `x: ${x3.toFixed(4)} | y: 0.0000`;
 
-        newR1 = x1;
-        newR2 = 0;
-        newR3 = 0;
-
-
-        root1.innerHTML = `x: ${x1.toFixed(4)} | y: 0.0000`;
-        root2.innerHTML = `x: Imaginary| y: Imaginary`;
-        root3.innerHTML = `x: Imaginary| y: Imaginary`;
-    }else {
-        if (valueP === 0 && valueQ === 0) {
-            const x1 = 0 - h;
-
-            newR1 = x1;
-            newR2 = x1;
-            newR3 = x1;
-
-            root1.innerHTML = `x: ${x1.toFixed(4)} | y: 0.0000`;
-            root2.innerHTML = `x: ${x1.toFixed(4)} | y: 0.0000`;
-            root3.innerHTML = `x: ${x1.toFixed(4)} | y: 0.0000`;
-        } else {
-            const ySingle = Math.cbrt(-4 * valueQ);
-            const xSingle = ySingle - h;
-
-            const yDouble = -ySingle / 2;
-            const xDouble = yDouble - h;
-
-            newR1 = xSingle;
-            newR2 = xDouble;
-            newR3 = xDouble;
-
-            root1.innerHTML = `x: ${xSingle.toFixed(4)} | y: 0.0000`;
-            root2.innerHTML = `x: ${xDouble.toFixed(4)} | y: 0.0000 (Double Root)`;
-            root3.innerHTML = `x: ${xDouble.toFixed(4)} | y: 0.0000 (Double Root)`;
-        }
-
-    }
-    let polyStr = valueA + "x³";
-
-    if (valueB > 0) {
-        polyStr = polyStr + " + " + valueB + "x²";
-    } else if (valueB < 0) {
-        polyStr = polyStr + " - " + (-valueB) + "x²";
+    let factor1 = `(x - ${x1.toFixed(4)})`;
+    if (x1 < 0) {
+      factor1 = `(x + ${(-x1).toFixed(4)})`;
     }
 
-    if (valueC > 0) {
-        polyStr = polyStr + " + " + valueC + "x";
-    } else if (valueC < 0) {
-        polyStr = polyStr + " - " + (-valueC) + "x";
+    let factor2 = `(x - ${x2.toFixed(4)})`;
+    if (x2 < 0) {
+      factor2 = `(x + ${(-x2).toFixed(4)})`;
     }
 
-    if (valueD > 0) {
-        polyStr = polyStr + " + " + valueD;
-    } else if (valueD < 0) {
-        polyStr = polyStr + " - " + (-valueD);
+    let factor3 = `(x - ${x3.toFixed(4)})`;
+    if (x3 < 0) {
+      factor3 = `(x + ${(-x3).toFixed(4)})`;
     }
 
-    equation.innerHTML = polyStr;
+    const coefficient = `${valueA}`;
 
-    const da = 3 * valueA;
-    const db = 2 * valueB;
+    factoredForm.innerHTML = `${coefficient}${factor1}${factor2}${factor3}`;
+    rootsSummary.innerHTML = "3 Distinct Real Roots";
 
-    let firstDerivativeString = da + "x²";
+  } else if (valueDelta > 0) {
+    const u = Math.cbrt(-valueQ / 2 + Math.sqrt(valueDelta));
+    const v = Math.cbrt(-valueQ / 2 - Math.sqrt(valueDelta));
+    const y1 = u + v;
+    x1 = y1 - h;
 
-    if (db > 0) {
-        firstDerivativeString = firstDerivativeString + " + " + db + "x";
-    } else if (db < 0) {
-        firstDerivativeString = firstDerivativeString + " - " + (-db) + "x";
-    }
+    newR1 = x1;
+    newR2 = NaN;
+    newR3 = NaN;
 
-    if (valueC > 0) {
-        firstDerivativeString = firstDerivativeString + " + " + valueC;
-    } else if (valueC < 0) {
-        firstDerivativeString = firstDerivativeString + " - " + (-valueC);
-    }
-
-    firstDerivative.innerHTML = firstDerivativeString;
-
-    const sda = 6 * valueA;
-    const sdb = 2 * valueB;
-
-    let secondDerivativeString = sda + "x";
-
-    if (sdb > 0) {
-        secondDerivativeString = secondDerivativeString + " + " + sdb;
-    } else if (sdb < 0) {
-        secondDerivativeString = secondDerivativeString + " - " + (-sdb);
-    }
-
-    secondDerivative.innerHTML = secondDerivativeString;
-
-if (valueDelta > 0) {
-    rootsSummary.innerHTML = "1 Real Root, 2 Complex Roots";
-} else if (valueDelta < 0) {
-    rootsSummary.innerHTML = "3 Real Roots";
-} else {
-    if (valueP === 0 && valueQ === 0) {
-        rootsSummary.innerHTML = "1 Triple Real Root";
-    } else {
-        rootsSummary.innerHTML = "1 Single Root, 1 Double Root";
-    }
-}
-
-if (valueDelta > 0) {
+    root1.innerHTML = `x: ${x1.toFixed(4)} | y: 0.0000`;
+    root2.innerHTML = `x: Imaginary | y: Imaginary`;
+    root3.innerHTML = `x: Imaginary | y: Imaginary`;
     factoredForm.innerHTML = "No real factorization";
-} else {
-    factoredForm.innerHTML = "Factored form active";
-}
+    rootsSummary.innerHTML = "1 Real Root, 2 Complex Roots";
+
+  } else {
+    if (valueP === 0 && valueQ === 0) {
+      const x1 = 0 - h;
+
+      newR1 = x1;
+      newR2 = x1;
+      newR3 = x1;
+
+      root1.innerHTML = `x: ${x1.toFixed(4)} | y: 0.0000`;
+      root2.innerHTML = `x: ${x1.toFixed(4)} | y: 0.0000`;
+      root3.innerHTML = `x: ${x1.toFixed(4)} | y: 0.0000`;
+      rootsSummary.innerHTML = "Triple Real Roots";
+
+    } else {
+      const srY = Math.cbrt(-4 * valueQ);
+      const srX = srY - h;
+
+      const drY = -srY / 2;
+      const drX = drY - h;
+
+      newR1 = srX;
+      newR2 = drX;
+      newR3 = drX;
+
+      root1.innerHTML = `x: ${srX.toFixed(4)} | y: 0.0000`;
+      root2.innerHTML = `x: ${drX.toFixed(4)} | y: 0.0000 (Double Root)`;
+      root3.innerHTML = `x: ${drX.toFixed(4)} | y: 0.0000 (Double Root)`;
+
+      let srFactor = `(x - ${srX.toFixed(4)})`;
+      if (srX < 0) {
+        srFactor = `(x + ${(-srX).toFixed(4)})`;
+      }
+
+      let drFactor = `(x - ${drX.toFixed(4)})²`;
+      if (drX < 0) {
+        drFactor = `(x + ${(-drX).toFixed(4)})²`;
+      }
+
+      let coefficient = `${valueA}`;
+
+      factoredForm.innerHTML = `${coefficient}${srFactor}${drFactor}`;
+      rootsSummary.innerHTML = "1 Single Root, 1 Double Root";
+
+    }
+  }
+  let polynomial = `${valueA}x³`;
+
+  if (valueB > 0) {
+    polynomial = `${polynomial} + ${valueB}x²`;
+  } else if (valueB < 0) {
+    polynomial = `${polynomial} - ${-valueB}x²`;
+  }
+
+  if (valueC > 0) {
+    polynomial = `${polynomial} + ${valueC}x`;
+  } else if (valueC < 0) {
+    polynomial = `${polynomial} - ${-valueC}x`;
+  }
+
+  if (valueD > 0) {
+    polynomial = `${polynomial} + ${valueD}`;
+  } else if (valueD < 0) {
+    polynomial = `${polynomial} - ${-valueD}`;
+  }
+
+  equation.innerHTML = polynomial;
+
+  const derivativeA = 3 * valueA;
+  const derivativeB = 2 * valueB;
+
+  let firstDerivativeStr = `${derivativeA}x²`;
+
+  if (derivativeB > 0) {
+    firstDerivativeStr = `${firstDerivativeStr} + ${derivativeB}x`;
+  } else if (derivativeB < 0) {
+    firstDerivativeStr = `${firstDerivativeStr} - ${-derivativeB}x`;
+  }
+
+  if (valueC > 0) {
+    firstDerivativeStr = `${firstDerivativeStr} + ${valueC}`;
+  } else if (valueC < 0) {
+    firstDerivativeStr = `${firstDerivativeStr} - ${-valueC}`;
+  }
+
+  firstDerivative.innerHTML = firstDerivativeStr;
+
+  const secondDerivativeA = 6 * valueA;
+  const secondDerivativeB = 2 * valueB;
+
+  let secondDerivativeStr = `${secondDerivativeA}x`;
+
+  if (secondDerivativeB > 0) {
+    secondDerivativeStr = `${secondDerivativeStr} + ${secondDerivativeB}`;
+  } else if (secondDerivativeB < 0) {
+    secondDerivativeStr = `${secondDerivativeStr} - ${-secondDerivativeB}`;
+  }
+
+  secondDerivative.innerHTML = secondDerivativeStr;
+
+  
 };
 
+const addItem = (event: Event) => {
+  event.preventDefault();
+  const valueA = a.value;
+  const valueB = b.value;
+  const valueC = c.value;
+  const valueD = d.value;
 
-const addItem = (event:Event) => {
-    event.preventDefault()
-    const valueA = a.value;
-    const valueB = b.value;
-    const valueC = c.value;
-    const valueD = d.value;
-
-    const li = document.createElement("li");
-    li.className = "flex items-center gap-3 bg-transparent";
-    li.innerHTML = `
+  const li = document.createElement("li");
+  li.className = "flex items-center gap-3 bg-transparent";
+  li.innerHTML = `
         <div class="flex-1 flex justify-around p-4 rounded-xl border border-slate-800 bg-[#0b0f19] text-white font-mono">
             <span>${valueA}</span>
             <span>${valueB}</span>
@@ -202,46 +222,44 @@ const addItem = (event:Event) => {
             Delete
         </button>
     `;
-    const card = li.querySelector("div");
-    if (card) {
-        card.addEventListener("click", () => {
-            a.value = valueA;
-            b.value = valueB;
-            c.value = valueC;
-            d.value = valueD;
-            calculateAnalysis();
-            graphFunction();
-        });
-    }
-    
-    const deleteBtn = li.querySelector(".delete-btn") as HTMLButtonElement
-    deleteBtn.addEventListener("click",() =>{
-      li.remove()
-    })
-    
+  const restore = li.querySelector("div");
+  if (restore) {
+    restore.addEventListener("click", () => {
+      a.value = valueA;
+      b.value = valueB;
+      c.value = valueC;
+      d.value = valueD;
+      calculateAnalysis();
+      graphFunction();
+    });
+  }
 
-    history.appendChild(li);
-}
+  const deleteBtn = li.querySelector(".delete-btn") as HTMLButtonElement;
+  deleteBtn.addEventListener("click", () => {
+    li.remove();
+  });
+
+  history.appendChild(li);
+};
 
 saveBtn.addEventListener("click", addItem);
 
-
 const graphFunction = () => {
   drawGraph(
-  { a: Number(a.value), b: Number(b.value), c: Number(c.value), d: Number(d.value) },
-  {
-    r1: { x: newR1, y: 0 },
-    r2: { x: newR2, y: 0 },
-    r3: { x: newR3, y: 0 },
-  },
-  canvas,
-);
-}
+    { a: Number(a.value), b: Number(b.value), c: Number(c.value), d: Number(d.value) },
+    {
+      r1: { x: newR1, y: 0 },
+      r2: { x: newR2, y: 0 },
+      r3: { x: newR3, y: 0 },
+    },
+    canvas,
+  );
+};
 
 const graph = () => {
-    calculateAnalysis();
-    graphFunction();
-}
+  calculateAnalysis();
+  graphFunction();
+};
 
 a.addEventListener("input", graph);
 b.addEventListener("input", graph);
